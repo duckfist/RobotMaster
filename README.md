@@ -1,7 +1,7 @@
 # RobotMaster
 2D Mega Man clone and level editor in .NET
 
-This project was stopped after Microsoft abandoned support for XNA.  I later converted the projects to MonoGame and cleaned up the project structure.  The game engine is mostly completed, the game just needs content now.  The level editor is function but still needs work
+This project was stopped after Microsoft abandoned support for XNA.  I later converted the projects to MonoGame and cleaned up the project structure.  The game engine is mostly completed, the game just needs content now.  The level editor is functional but still needs work.
 
 Old readme/changelong starts here:
 =======================================
