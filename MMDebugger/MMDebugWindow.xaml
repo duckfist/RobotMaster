@@ -1,0 +1,130 @@
+﻿<Window x:Class="MMDebugger.MMDebugWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Debug Man" Height="366" Width="702">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="418*" />
+            <ColumnDefinition Width="262*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Grid Name="grdBaseGame" Grid.Column="1" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <GroupBox Header="Screen Stack" Grid.Row="0" HorizontalAlignment="Stretch" Name="groupBox3" VerticalAlignment="Stretch">
+                <Grid>
+                    <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="tbkScreenStack" Text="HEY THERE" FontSize="10"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Header="Game" HorizontalAlignment="Stretch" Name="gbxGame" VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="126*" />
+                        <ColumnDefinition Width="79*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="TotalGameTime (ms)" HorizontalAlignment="Right" Name="label30" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <!--<Label Grid.Row="0" Grid.Column="1" Content="12345" HorizontalAlignment="Left" Name="lblTotalGameTime" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />-->
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="lololol" HorizontalAlignment="Right" Name="lblTotalGameTimeFull" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="ElapsedGameTime (ms)" HorizontalAlignment="Right" Name="label31" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <!--<Label Grid.Row="2" Grid.Column="1" Content="12345" HorizontalAlignment="Left" Name="lblElapsedGameTime" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />-->
+                    <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="lololol" HorizontalAlignment="Right" Name="lblElapsedGameTimeFull" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="FPS" HorizontalAlignment="Right" Name="label33" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="2" Grid.Column="1" Content="1" HorizontalAlignment="Left" Name="lblFPS" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="IsRunningSlowly" HorizontalAlignment="Right" Name="label32" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="4" Grid.Column="1" Content="false" HorizontalAlignment="Left" Name="lblIsRunningSlowly" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                </Grid>
+            </GroupBox>
+        </Grid>
+        
+
+        <Grid Name="grdGameplayScreen" Grid.Column="0" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Mega Man" HorizontalAlignment="Stretch" Name="groupBox1" VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="97*" />
+                        <ColumnDefinition Width="148*" />
+                        <ColumnDefinition Width="132*" />
+                        <ColumnDefinition Width="114*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="(x,y) =" HorizontalAlignment="Right" Name="label0" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="0" Grid.Column="1" Content="(128,128)" HorizontalAlignment="Left" Name="lblMMPosition" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="(x+w,y+h) =" HorizontalAlignment="Right" Name="label1" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="1" Grid.Column="1" Content="(128,128)" HorizontalAlignment="Left" Name="lblMMPositionOpposite" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="Velocity =" HorizontalAlignment="Right" Name="label8" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="2" Grid.Column="1" Content="(128,128)" HorizontalAlignment="Left" Name="lblMMVelocity" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+
+                    <Label Grid.Row="0" Grid.Column="2" Content="IsAbleToJump =" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="0" Grid.Column="3" Content="false" HorizontalAlignment="Left" Name="lblIsAbleToJump" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="1" Grid.Column="2" Content="IsJumping =" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="1" Grid.Column="3" Content="false" HorizontalAlignment="Left" Name="lblIsJumping" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="2" Grid.Column="2" Content="IsFalling =" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="2" Grid.Column="3" Content="false" HorizontalAlignment="Left" Name="lblIsFalling" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="3" Grid.Column="2" Content="IsClimbing =" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                    <Label Grid.Row="3" Grid.Column="3" Content="false" HorizontalAlignment="Left" Name="lblIsClimbing" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <!--<Label Grid.Row="4" Grid.Column="2" Content="IsAbleToClimb =" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="10" FontFamily="Consolas" />
+                <Label Grid.Row="4" Grid.Column="3" Content="false" HorizontalAlignment="Left" Name="lblIsAbleToClimb" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />-->
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Grid.Column="0" Header="Level" HorizontalAlignment="Stretch" Name="groupBox2" VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="112*" />
+                        <ColumnDefinition Width="131*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Cam Position =" HorizontalAlignment="Right" Name="label2" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="0" Grid.Column="1" Content="(128,128)" HorizontalAlignment="Left" Name="lblCamPosition" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Room Number =" HorizontalAlignment="Right" Name="label3" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Label Grid.Row="1" Grid.Column="1" Content="9" HorizontalAlignment="Left" Name="lblRoomNum" VerticalAlignment="Center" FontFamily="Consolas" FontSize="10" />
+                    <Button Grid.Row="4" Grid.Column="1" Name="btnRestartLevel" Content="Restart" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnRestartLevel_Click" />
+                    <ToggleButton Grid.Row="4" Grid.Column="0" Name="btnPause" Content="Pause" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnPause_Click"/>
+                    <CheckBox Content="Draw Hitboxes" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Name="chkDrawHitboxes" VerticalAlignment="Center" Checked="chkDrawHitboxes_Checked" Unchecked="chkDrawHitboxes_Unchecked" />
+                </Grid>
+            </GroupBox>
+            
+        </Grid>
+        
+        
+    </Grid>
+</Window>
+
+    

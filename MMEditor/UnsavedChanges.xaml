@@ -1,0 +1,20 @@
+﻿<Window x:Class="MMEditor.UnsavedChanges"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Save and Exit" Height="141" Width="410">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Height="39" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" TextAlignment="Center" Name="textBlock1" Text="There are unsaved changes to your level.  Would you like to save your changes before exiting?" VerticalAlignment="Top" Width="364" TextWrapping="Wrap" />
+        <Button Grid.Row="1" Grid.Column="0" Name="btnYes" Content="Yes, save and exit" Click="btnYes_Click" />
+        <Button Grid.Row="1" Grid.Column="1" Name="btnNo" Content="No, exit without save" Click="btnNo_Click" />
+        <Button Grid.Row="1" Grid.Column="2" Name="btnCancel" Content="Cancel and go back" Click="btnCancel_Click" />
+    </Grid>
+</Window>

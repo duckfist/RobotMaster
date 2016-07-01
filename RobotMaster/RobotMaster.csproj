@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0E69CB1C-D8A0-410C-8DDD-35ACA273C507}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RobotMaster</RootNamespace>
+    <AssemblyName>RobotMaster</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <MonoGameContentBuilderExe>
+    </MonoGameContentBuilderExe>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Control.cs" />
+    <Compile Include="Controls\ControlManager.cs" />
+    <Compile Include="Controls\Label.cs" />
+    <Compile Include="Controls\LeftRightSelector.cs" />
+    <Compile Include="Controls\LinkLabel.cs" />
+    <Compile Include="Entities\AttributePair.cs" />
+    <Compile Include="Entities\Bullets\Bullet.cs" />
+    <Compile Include="Entities\Bullets\EnemyBullets\MedusaBullet.cs" />
+    <Compile Include="Entities\Bullets\MegaBuster.cs" />
+    <Compile Include="Entities\Bullets\SolarBlaze.cs" />
+    <Compile Include="Entities\Bullets\TripleBlade.cs" />
+    <Compile Include="Entities\Bullets\WaterShield.cs" />
+    <Compile Include="Entities\DeathExplosion.cs" />
+    <Compile Include="Entities\DebugRectangle.cs" />
+    <Compile Include="Entities\Effect.cs" />
+    <Compile Include="Entities\Enemies\Boss.cs" />
+    <Compile Include="Entities\Enemies\Enemy.cs" />
+    <Compile Include="Entities\Enemies\JumpSpider.cs" />
+    <Compile Include="Entities\Enemies\MedusaHead.cs" />
+    <Compile Include="Entities\Enemies\SmallJumper.cs" />
+    <Compile Include="Entities\Enemies\TestBoss.cs" />
+    <Compile Include="Entities\Enemies\Zoomer.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\MegaMan.cs" />
+    <Compile Include="Entities\MeterDisplay.cs" />
+    <Compile Include="Entities\Special\BossDoor.cs" />
+    <Compile Include="Entities\Special\Obstacle.cs" />
+    <Compile Include="Entities\Special\RisingPlatform.cs" />
+    <Compile Include="Exit.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="GameComponents\AnimatedSprite.cs" />
+    <Compile Include="GameComponents\Animation.cs" />
+    <Compile Include="GameComponents\BackgroundComponent.cs" />
+    <Compile Include="GameComponents\InputManager.cs" />
+    <Compile Include="GameComponents\MenuComponent.cs" />
+    <Compile Include="GameComponents\SaveData.cs" />
+    <Compile Include="GameComponents\ScreenManager.cs" />
+    <Compile Include="GameComponents\Session.cs" />
+    <Compile Include="GameScreens\GamePlayScreen.cs" />
+    <Compile Include="GameScreens\GameScreen.cs" />
+    <Compile Include="GameScreens\PauseScreen.cs" />
+    <Compile Include="GameScreens\StageSelectScreen.cs" />
+    <Compile Include="GameScreens\StartScreen.cs" />
+    <Compile Include="GameScreens\TitleScreen.cs" />
+    <Compile Include="GameScreens\TransitiveGameScreen.cs" />
+    <Compile Include="MegaMath.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenEvents\ScreenEventArgs.cs" />
+    <Compile Include="TileEngine\Camera.cs" />
+    <Compile Include="TileEngine\Engine.cs" />
+    <Compile Include="TileEngine\Level.cs" />
+    <Compile Include="TileEngine\MapLayer.cs" />
+    <Compile Include="TileEngine\Room.cs" />
+    <Compile Include="TileEngine\Tile.cs" />
+    <Compile Include="TileEngine\TileMap.cs" />
+    <Compile Include="TileEngine\Tileset.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Sprites_mm10Objects.png" />
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DebuggerHost\DebuggerHost.csproj">
+      <Project>{6c7d7aa9-ae0f-469a-9018-0354336b7906}</Project>
+      <Name>DebuggerHost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MMDebugger\MMDebugger.csproj">
+      <Project>{4493537b-7792-4532-a21b-9b8e9b1c4d1a}</Project>
+      <Name>MMDebugger</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

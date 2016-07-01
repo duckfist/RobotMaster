@@ -1,0 +1,63 @@
+﻿<Window x:Class="MMEditor.NewTileset"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MMEditor"
+      mc:Ignorable="d" 
+      d:DesignHeight="404" d:DesignWidth="589"
+	Title="Tileset for new Level" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Closing="Window_Closing">
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <GroupBox Header="New Tileset" Height="277" HorizontalAlignment="Left" Margin="307,11,0,0" Name="gbxNewTileset" VerticalAlignment="Top" Width="107">
+            <StackPanel>
+                <Button Content="Browse..." Height="23" HorizontalAlignment="Stretch" Name="btnBrowse" VerticalAlignment="Top" Click="btnBrowse_Click" />
+                <Label Content="Tile Pixel Width:" Height="28" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Top" />
+                <TextBox IsEnabled="False" Text="16" Name="tbxTileWidth" TabIndex="0" Height="23" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="95" TextChanged="tbxTileWidth_TextChanged" />
+                <Label Content="Tile Pixel Height:" Height="28" HorizontalAlignment="Left" Name="label2" VerticalAlignment="Top" />
+                <TextBox IsEnabled="False" Text="16" Name="tbxTileHeight" TabIndex="1" Height="23" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="95" TextChanged="tbxTileHeight_TextChanged" />
+                <CheckBox IsEnabled="False" Name="chkShowGrid" Content="Show Grid" Margin="8,8" HorizontalAlignment="Center" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Tile count: " FontSize="10" />
+                    <TextBlock Text="" Name="txtTileCount" FontSize="10" />
+                </StackPanel>
+                <TextBlock Text="" Name="txtDimensions" FontSize="10" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </GroupBox>
+        
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="289" Height="276">
+            <Grid Name="GridTileset" PreviewMouseLeftButtonDown="GridTileset_PreviewMouseLeftButtonDown">
+                <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Name="imgTileset" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            </Grid>
+        </Border>
+        
+        <StackPanel Orientation="Horizontal" Margin="13,294,12,12">
+            <TextBlock Text="Path:  " VerticalAlignment="Center"/>
+            <TextBox Name="tbxPath" Text="C:\LOL\" Width="414" HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#FF0000F7" Background="#FFEBEBEB" TextWrapping="NoWrap" Cursor="IBeam" IsReadOnly="True" />
+            <Button Content="OK" IsEnabled="False" Margin="8,0,0,0" Height="23" Name="btnOk" Width="75" Click="btnOk_Click" />
+        </StackPanel>
+        
+        <GroupBox Name="gbxSelectedTile" IsEnabled="False" Header="Selected Tile" Margin="420,11,12,77">
+            <StackPanel Orientation="Vertical">
+                <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Width="64" Height="64" Name="imgSelectedTile" HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Row: "/>
+                    <TextBlock Name="tbkTileRow" Text="1"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Column: "/>
+                    <TextBlock Name="tbkTileCol" Text="1"/>
+                </StackPanel>
+                <RadioButton FontSize="10" GroupName="radGroupCollisions" Name="radPassable" Content="Passable" IsChecked="True" Checked="radPassable_Checked" />
+                <RadioButton FontSize="10" GroupName="radGroupCollisions" Name="radImpassable" Content="Impassable" Checked="radImpassable_Checked" />
+                <RadioButton FontSize="10" GroupName="radGroupCollisions" Name="radPlatform" Content="Platform" Checked="radPlatform_Checked" />
+                <RadioButton FontSize="10" GroupName="radGroupCollisions" Name="radLadder" Content="Ladder" Checked="radLadder_Checked" />
+                <RadioButton FontSize="10" GroupName="radGroupCollisions" Name="radConveyorLeft" Content="Conveyor Left" Checked="radConveyorLeft_Checked" />
+                <RadioButton FontSize="10" GroupName="radGroupCollisions" Name="radConveyorRight" Content="Conveyor Right" Checked="radConveyorRight_Checked" />
+                <TextBlock Text=" Frames:" Margin="0,16,0,0"/>
+                <TextBox Name="tbxFrames" Text="1" Width="32" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="tbxFrames_TextChanged" />
+            </StackPanel>
+        </GroupBox>
+        
+    </Grid>
+</Window>
