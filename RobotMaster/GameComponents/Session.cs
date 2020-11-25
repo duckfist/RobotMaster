@@ -10,7 +10,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
+//using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 
@@ -19,6 +19,8 @@ using RobotMaster.TileEngine;
 using RobotMaster.Entities;
 
 using DebuggerHost;
+using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace RobotMaster.GameComponents
 {
@@ -32,9 +34,9 @@ namespace RobotMaster.GameComponents
         public static Camera Camera;
         public static Engine Engine;
         public static TileMap CurrentMap;
-        public static Room CurrentRoom { get { return CurrentMap.CurrentRoom; } }
+        public static Room CurrentRoom { get { return CurrentMap?.CurrentRoom; } }
         public static PlayerIndex? PlayerInControl;
-        public static StorageDevice StorageDevice = null;
+        //public static StorageDevice StorageDevice = null;
         public static SaveData GameData = new SaveData();
         public static Level Level;
         public static MeterDisplay HPMeter;
@@ -46,7 +48,10 @@ namespace RobotMaster.GameComponents
         public static bool DebugPause = false;
         public static bool DebugHitboxes = false;
         public static bool DebugFrameIsAdvancing = false;
-        public static Thread thDebug;
+        public static Thread thDebugWindow;
+        public static Thread thDebugUpdate;
+        //public static BackgroundWorker thDebugUpdate;
+        //private static AutoResetEvent _resetEvent = new AutoResetEvent(false);
 
         public static Vector2 ScrollDestination = Vector2.Zero;
         public static bool IsScrolling = false;
@@ -76,7 +81,6 @@ namespace RobotMaster.GameComponents
             GameRef = (Game1)game;
             Camera = new Camera();
             Engine = new Engine(16, 16, game);
-            
         }
 
         public static void DrawMap(SpriteBatch spriteBatch)
@@ -154,28 +158,28 @@ namespace RobotMaster.GameComponents
             }
         }
 
-        public static void SaveGame(string gamename)
-        {
-            // Open a storage container
-            IAsyncResult result = StorageDevice.BeginOpenContainer("MegaMan10x", null, null);
+        //public static void SaveGame(string gamename)
+        //{
+        //    // Open a storage container
+        //    IAsyncResult result = StorageDevice.BeginOpenContainer("MegaMan10x", null, null);
 
-            // Wait for WaitHandle to be signaled
-            result.AsyncWaitHandle.WaitOne();
+        //    // Wait for WaitHandle to be signaled
+        //    result.AsyncWaitHandle.WaitOne();
 
-            StorageContainer container = StorageDevice.EndOpenContainer(result);
+        //    StorageContainer container = StorageDevice.EndOpenContainer(result);
 
-            // Close the wait handle.
-            result.AsyncWaitHandle.Close();
+        //    // Close the wait handle.
+        //    result.AsyncWaitHandle.Close();
 
-            //string filename = "savegame.sav";
-            if (container.FileExists(gamename))
-                container.DeleteFile(gamename);
-            FileStream stream = new FileStream(gamename, FileMode.Create);
-            XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
-            serializer.Serialize(stream, GameData);
-            stream.Close();
-            container.Dispose();
-        }
+        //    //string filename = "savegame.sav";
+        //    if (container.FileExists(gamename))
+        //        container.DeleteFile(gamename);
+        //    FileStream stream = new FileStream(gamename, FileMode.Create);
+        //    XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
+        //    serializer.Serialize(stream, GameData);
+        //    stream.Close();
+        //    container.Dispose();
+        //}
 
         public static CollisionResult CollisionCheckTilemap(Vector2 Position, Vector2 PreviousPosition, FloatRect Hitbox)
         {
@@ -320,25 +324,73 @@ namespace RobotMaster.GameComponents
 
         public static void SetupDebugger(GameTime gameTime)
         {
-            // Launch debugger thread window and message loop
-            thDebug = new Thread(() =>
-                {
-                    //reset.Set();
-                    Debugger.Show(HandleDebuggerEvents);
-                });
-            thDebug.SetApartmentState(ApartmentState.STA);
-            thDebug.Start();
+            Console.WriteLine($">>> SetupDebugger called on thread {Thread.CurrentThread.ManagedThreadId}, apartment state {Thread.CurrentThread.GetApartmentState()}");
 
+            // Launch debugger thread window and message loop
+            if (thDebugWindow != null)
+                thDebugWindow.Join();
+            thDebugWindow = new Thread(() =>
+            {
+                Console.WriteLine($">>> Thread \"{Thread.CurrentThread.Name}\" (ID: {Thread.CurrentThread.ManagedThreadId}) started, {Thread.CurrentThread.GetApartmentState()}");
+
+                //reset.Set();
+                try
+                {
+                    Debugger.Show(HandleDebuggerEvents);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($">>> EXCEPTION on Debugger.Show(): {ex}");
+                }
+            });
+
+            thDebugWindow.Name = "Debug Window";
+            // TODO we SHOULDN'T need this
+            thDebugWindow.SetApartmentState(ApartmentState.STA);
+            thDebugWindow.IsBackground = true;
+            Thread.Sleep(10);
+            thDebugWindow.Start();
             Thread.Sleep(10);
 
-            // Launch debugger updater thread
-            Thread th = new Thread(() => 
-                {
-                    UpdateDebugger(gameTime);
-                    //reset.WaitOne();
-                });
-            th.Start();
-            
+            //// Launch debugger updater thread
+            //if (thDebugUpdate != null)
+            //{
+            //    thDebugUpdate.CancelAsync();
+            //}
+
+            //thDebugUpdate = new BackgroundWorker();
+            //thDebugUpdate.DoWork += (o, args) =>
+            //{
+            //    Thread.CurrentThread.Name = "Debug Updater";
+            //    Console.WriteLine($">>> Thread \"{Thread.CurrentThread.Name}\" (ID: {Thread.CurrentThread.ManagedThreadId}) started, {Thread.CurrentThread.GetApartmentState()}");
+            //    UpdateDebugger(gameTime);
+            //};
+            //thDebugUpdate.WorkerSupportsCancellation = true;
+            //thDebugUpdate.RunWorkerAsync();
+
+            if (thDebugUpdate != null)
+                thDebugUpdate.Join();
+
+            thDebugUpdate = new Thread(() => 
+            {
+                Thread.CurrentThread.Name = "Debug Updater";
+                Console.WriteLine($">>> Thread \"{Thread.CurrentThread.Name}\" (ID: {Thread.CurrentThread.ManagedThreadId}) started, {Thread.CurrentThread.GetApartmentState()}");
+                UpdateDebugger(gameTime);
+            });
+            thDebugUpdate.IsBackground = true;
+            thDebugUpdate.Start();
+
+
+            //Thread th = new Thread(() =>
+            //{
+            //    Console.WriteLine($">>> Thread \"{Thread.CurrentThread.Name}\" (ID: {Thread.CurrentThread.ManagedThreadId}) started, {Thread.CurrentThread.GetApartmentState()}");
+
+            //    UpdateDebugger(gameTime);
+            //});
+
+            //th.Name = "Debug Updater";
+            //Thread.Sleep(10);
+            //th.Start();
         }
 
         public static void UpdateDebugger(GameTime gameTime)
@@ -353,7 +405,10 @@ namespace RobotMaster.GameComponents
                     debugInfo.TotalGameTime = gameTime.TotalGameTime;
                     debugInfo.IsRunningSlowly = gameTime.IsRunningSlowly;
 
-                    Debugger.WriteGameDebug(debugInfo);
+                    Dispatcher.CurrentDispatcher.Invoke(() => 
+                    {
+                        Debugger.WriteGameDebug(debugInfo);
+                    });
                     //Debugger.IsBaseGameEnabled = true;
                 }
                 catch (Exception e)
@@ -364,19 +419,32 @@ namespace RobotMaster.GameComponents
                 try
                 {
                     DebugInfo debugInfo = new DebugInfo();
-                    debugInfo.megaX = MegaMan.Position.X;
-                    debugInfo.megaY = MegaMan.Position.Y;
-                    debugInfo.megaRight = MegaMan.HitBox.Right;
-                    debugInfo.megaDown = MegaMan.HitBox.Bottom;
-                    debugInfo.cameraX = Camera.Position.X;
-                    debugInfo.cameraY = Camera.Position.Y;
-                    debugInfo.velocityX = MegaMan.Velocity.X;
-                    debugInfo.velocityY = MegaMan.Velocity.Y;
-                    debugInfo.IsAbleToJump = MegaMan.IsAbleToJump;
-                    debugInfo.IsFalling = MegaMan.IsFalling;
-                    debugInfo.IsClimbing = MegaMan.IsClimbing;
-                    debugInfo.IsJumping = MegaMan.IsJumping;
-                    debugInfo.RoomNum = CurrentRoom.RoomNumber;
+
+                    // TODO replace with more elegant null conditional operator
+                    if (MegaMan != null)
+                    {
+                        debugInfo.megaX = MegaMan.Position.X;
+                        debugInfo.megaY = MegaMan.Position.Y;
+                        debugInfo.megaRight = MegaMan.HitBox.Right;
+                        debugInfo.megaDown = MegaMan.HitBox.Bottom;
+                        debugInfo.velocityX = MegaMan.Velocity.X;
+                        debugInfo.velocityY = MegaMan.Velocity.Y;
+                        debugInfo.IsAbleToJump = MegaMan.IsAbleToJump;
+                        debugInfo.IsFalling = MegaMan.IsFalling;
+                        debugInfo.IsClimbing = MegaMan.IsClimbing;
+                        debugInfo.IsJumping = MegaMan.IsJumping;
+                    }
+
+                    if (Camera != null)
+                    {
+                        debugInfo.cameraX = Camera.Position.X;
+                        debugInfo.cameraY = Camera.Position.Y;
+                    }
+
+                    if (CurrentMap != null)
+                    {
+                        debugInfo.RoomNum = CurrentRoom.RoomNumber;
+                    }
 
                     Debugger.WriteGameplayScreenDebug(debugInfo);
                     //Debugger.IsGameplayScreenEnabled = true;
@@ -388,6 +456,8 @@ namespace RobotMaster.GameComponents
 
                 Thread.Sleep(10);
             }
+
+            //_resetEvent.Set();
         }
 
         public static void HandleDebuggerEvents(object sender, MMDebugger.MMDebugEventArgs args)
@@ -428,11 +498,23 @@ namespace RobotMaster.GameComponents
             // Shutdown debugger window and message loop thread
             if (DebugMode)
             {
-                Debugger.Exit(thDebug);
+                // Stop the debug updater
+                DebugMode = false;
+
+                // Close debug window thread
+                Debugger.Exit(thDebugWindow);
+
+                //// Close debug updater thread
+                //thDebugUpdate.CancelAsync();
+                //_resetEvent.WaitOne();
+
+                thDebugUpdate.Abort();
+                thDebugWindow = null;
+                thDebugUpdate = null;
+                //thDebugWindow.Abort();
             }
 
-            // Stop the debug updater
-            DebugMode = false;
+
         }
 
         #endregion

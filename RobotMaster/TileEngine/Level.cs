@@ -8,7 +8,6 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Content;
 
 using RobotMaster.Mathematics;
@@ -187,16 +186,16 @@ namespace RobotMaster.TileEngine
         {
             String path = String.Format("Levels\\level" + levelIndex + ".xml");
 
-            // Open a storage container
-            IAsyncResult result = Session.StorageDevice.BeginOpenContainer("MegaMan10x", null, null);
+            //// Open a storage container
+            //IAsyncResult result = Session.StorageDevice.BeginOpenContainer("MegaMan10x", null, null);
 
-            // Wait for WaitHandle to be signaled
-            result.AsyncWaitHandle.WaitOne();
+            //// Wait for WaitHandle to be signaled
+            //result.AsyncWaitHandle.WaitOne();
 
-            StorageContainer container = Session.StorageDevice.EndOpenContainer(result);
+            //StorageContainer container = Session.StorageDevice.EndOpenContainer(result);
 
-            // Close the wait handle.
-            result.AsyncWaitHandle.Close();
+            //// Close the wait handle.
+            //result.AsyncWaitHandle.Close();
 
             SerializedLevel level = null;
 
@@ -212,7 +211,7 @@ namespace RobotMaster.TileEngine
             {
                 
             }
-            container.Dispose();
+            //container.Dispose();
 
             return level;
         }
@@ -221,25 +220,25 @@ namespace RobotMaster.TileEngine
         {
             String path = String.Format("level" + levelIndex + ".xml");
 
-            // Open a storage container
-            IAsyncResult result = Session.StorageDevice.BeginOpenContainer("MegaMan10x", null, null);
+            //// Open a storage container
+            //IAsyncResult result = Session.StorageDevice.BeginOpenContainer("MegaMan10x", null, null);
 
-            // Wait for WaitHandle to be signaled
-            result.AsyncWaitHandle.WaitOne();
+            //// Wait for WaitHandle to be signaled
+            //result.AsyncWaitHandle.WaitOne();
 
-            StorageContainer container = Session.StorageDevice.EndOpenContainer(result);
+            //StorageContainer container = Session.StorageDevice.EndOpenContainer(result);
 
-            // Close the wait handle.
-            result.AsyncWaitHandle.Close();
+            //// Close the wait handle.
+            //result.AsyncWaitHandle.Close();
 
-            //string filename = "savegame.sav";
-            if (container.FileExists(path))
-                container.DeleteFile(path);
+            ////string filename = "savegame.sav";
+            //if (container.FileExists(path))
+            //    container.DeleteFile(path);
             FileStream stream = new FileStream(path, FileMode.Create);
             XmlSerializer serializer = new XmlSerializer(typeof(SerializedLevel));
             serializer.Serialize(stream, level);
             stream.Close();
-            container.Dispose();
+            //container.Dispose();
         }
     }
 }

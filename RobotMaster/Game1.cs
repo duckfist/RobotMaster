@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Media;
 
 using RobotMaster.GameScreens;
 using RobotMaster.GameComponents;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace RobotMaster
 {
@@ -45,14 +47,18 @@ namespace RobotMaster
 
         #endregion
 
-        public Game1(IntPtr handle) : this()
+        // Create game when launched from the editor (will always have debug mode on)
+        public Game1(IntPtr handle, bool debugMode) : this()
         {
+            Session.DebugMode = debugMode;
             gfxHandle = handle;
             graphics.PreparingDeviceSettings += OnPrepareDeviceSettings;
         }
 
         public Game1()
         {
+            Console.WriteLine($">>> Game1 started on thread \"{Thread.CurrentThread.Name}\" (ID: {Thread.CurrentThread.ManagedThreadId}), state {Thread.CurrentThread.GetApartmentState()}");
+
             graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
@@ -129,6 +135,7 @@ namespace RobotMaster
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            Console.WriteLine($">>> Game1.UnloadContent() called on thread {Thread.CurrentThread.ManagedThreadId}");
         }
 
         /// <summary>
@@ -143,7 +150,7 @@ namespace RobotMaster
             //    this.Exit();
 
             // Setup the debug window, feeding it the gameTime object
-            if (Session.thDebug == null && Session.DebugMode)
+            if (Session.thDebugWindow == null && Session.DebugMode)
             {
                 Session.SetupDebugger(gameTime);
             }
@@ -185,7 +192,8 @@ namespace RobotMaster
 
         private void OnPrepareDeviceSettings(object sender, PreparingDeviceSettingsEventArgs args)
         {
-            args.GraphicsDeviceInformation.PresentationParameters.DeviceWindowHandle = gfxHandle;
+            // Apparently this breaks the game when launching it from the editor now. Commenting this out magically makes it work again. Consider removing this whole thing.
+            //args.GraphicsDeviceInformation.PresentationParameters.DeviceWindowHandle = gfxHandle;
         }
     }
 }

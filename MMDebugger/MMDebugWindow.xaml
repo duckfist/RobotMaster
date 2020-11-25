@@ -1,7 +1,8 @@
 ﻿<Window x:Class="MMDebugger.MMDebugWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Debug Man" Height="366" Width="702">
+        Title="Debug Man" Height="366" Width="702"
+        Closed="Window_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="418*" />

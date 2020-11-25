@@ -15,6 +15,7 @@ using System.IO;
 using RobotMaster;
 using RobotMaster.TileEngine;
 using RobotMaster.Entities;
+using System.Threading;
 
 namespace MMEditor
 {
@@ -23,6 +24,8 @@ namespace MMEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const string RAW_CONTENT_PATH = "..\\RobotMaster\\Content";
+
         public static readonly int ViewportWidth = 256;
         public static readonly int ViewportHeight = 224;
         public static int ScaleTileset = 2;
@@ -33,6 +36,7 @@ namespace MMEditor
 
         int animationFrame = 0;
         DispatcherTimer dt;
+        Thread thTestGame;
 
         public SerializedLevel serialized = new SerializedLevel();
         public List<int[,]> roomMaps = new List<int[,]>(); // Arrays of maps for each room
@@ -223,7 +227,8 @@ namespace MMEditor
             {
                 // Save copy of tileset image
                 string tilesetFileName = System.IO.Path.GetFileName(serialized.TexturePath);
-                string targetTilesetPath = "Content\\Tiles";
+                string targetTilesetPath = $"Tiles";
+                //string targetTilesetPath = $"{RAW_CONTENT_PATH}\\Tiles";
                 string targetFile = System.IO.Path.Combine(targetTilesetPath, tilesetFileName);
                 if (!Directory.Exists(targetTilesetPath))
                 {
@@ -439,8 +444,17 @@ namespace MMEditor
             wndTestGame testGame = new wndTestGame();
             IntPtr handle = testGame.RenderPanel.Handle;
             
-            Game1 game;
-            new System.Threading.Thread(new System.Threading.ThreadStart(() => { game = new Game1(handle); game.Run(); })).Start();
+            thTestGame = new System.Threading.Thread(new System.Threading.ThreadStart(() =>
+            {
+                // TODO: Make DebugMode configurable from the editor, then pass it in to 2nd param?
+                using (Game1 game = new Game1(handle, true))
+                {
+                    game.Run();
+                }
+            }));
+
+            thTestGame.Name = "Test Game";
+            thTestGame.Start();
         }
 
         #endregion
@@ -535,7 +549,9 @@ namespace MMEditor
             ImageSourceConverter sourceConverter = new ImageSourceConverter();
             Console.WriteLine(Directory.GetCurrentDirectory());
 
-            object wtf = sourceConverter.ConvertFromString("Content\\" + serialized.TexturePath + ".png");
+            // TODO make sure raw assets are loaded from the correct directory (probably not bin? that's meant for .xnb)
+            string texPath = $"{RAW_CONTENT_PATH}\\{serialized.TexturePath}.png";
+            object wtf = sourceConverter.ConvertFromString(texPath);
             ImageSource source = (ImageSource)wtf;
             imgTileset.Source = source;
             imgTileset.Width = source.Width * ScaleTileset;
@@ -762,13 +778,24 @@ namespace MMEditor
                 return;
             }
 
-            // Load image file from content folder, scale it, and apply to image source
-            BitmapImage bmp = new BitmapImage(new Uri(path));
-            int scalarX = (int)(stackSelectedObstacle.ActualWidth / bmp.PixelWidth);
-            int scalarY = (int)(stackSelectedObstacle.ActualHeight / bmp.PixelHeight);
-            imgSelectedObstacle.Height = bmp.PixelHeight * scalarX;
-            imgSelectedObstacle.Width = bmp.PixelWidth * scalarY;
-            imgSelectedObstacle.Source = bmp;
+            if (File.Exists(path))
+            {
+                // Load image file from content folder, scale it, and apply to image source
+                BitmapImage bmp = new BitmapImage(new Uri(path));
+                int scalarX = (int)(stackSelectedObstacle.ActualWidth / bmp.PixelWidth);
+                int scalarY = (int)(stackSelectedObstacle.ActualHeight / bmp.PixelHeight);
+                imgSelectedObstacle.Height = bmp.PixelHeight * scalarX;
+                imgSelectedObstacle.Width = bmp.PixelWidth * scalarY;
+                imgSelectedObstacle.Source = bmp;
+            }
+            else
+            {
+                // For some reason, the image file does not exist. Deselect the special object listbox.
+                string errMsg = $">>> ERROR: Image does not exist at \"{path}\".";
+                Console.WriteLine(errMsg);
+                MessageBox.Show(errMsg);
+                lbxObstacleSelect.SelectedIndex = -1;
+            }
         }
 
         private void lbxEnemySelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -850,9 +877,28 @@ namespace MMEditor
             tbxTilePosHover.Text = String.Format("({0}, {1})", cellCol, cellRow);
             try
             {
-                int tilesetIndexHover = roomMaps[SelectedRoomIndex][cellCol, cellRow];
-                tbxTileTypeHover.Text = ((TileCollision)serialized.TilesetCollisionKey[tilesetIndexHover]).ToString();
-                tbxCurrentScreen.Text = String.Format("{0}", cellCol / 16);
+                if (cellCol < 0 || cellRow < 0)
+                {
+                    // Mouse is out of the tilemap bounds
+                }
+                else
+                {
+                    int tilesetIndexHover = roomMaps[SelectedRoomIndex][cellCol, cellRow];
+
+                    // TODO refactor to one line conditional
+                    if (tilesetIndexHover >= 0)
+                    {
+                        tbxTileTypeHover.Text = ((TileCollision)serialized.TilesetCollisionKey[tilesetIndexHover]).ToString();
+                    }
+                    else
+                    {
+                        tbxTileTypeHover.Text = "NONE";
+                    }
+
+                    tbxCurrentScreen.Text = String.Format("{0}", cellCol / 16);
+                }
+
+
             }
             catch (IndexOutOfRangeException ex)
             {
@@ -1432,8 +1478,12 @@ namespace MMEditor
             dt.Stop();
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Console.WriteLine($">>> Editor MainWindow Closed event (Thread ID: {Thread.CurrentThread.ManagedThreadId})");
 
-
+            Dispatcher.InvokeShutdown();
+        }
     }
 
     public enum Layers

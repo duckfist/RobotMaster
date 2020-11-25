@@ -1,7 +1,10 @@
 ﻿<Window x:Class="MMEditor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MM10x Level Editor" Height="646" Width="1083" MinWidth="1000" MinHeight="600" Closing="Window_Closing" ResizeMode="CanResizeWithGrip">
+        Title="MM10x Level Editor" Height="646" Width="1083" MinWidth="1000" MinHeight="600" 
+        Closing="Window_Closing" 
+        Closed="Window_Closed"
+        ResizeMode="CanResizeWithGrip">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

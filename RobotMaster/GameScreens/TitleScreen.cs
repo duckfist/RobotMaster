@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 //using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Storage;
 
 using RobotMaster.GameComponents;
 using RobotMaster.Controls;
@@ -59,26 +58,27 @@ namespace RobotMaster.GameScreens
                 if (!Guide.IsVisible)
                     StorageDevice.BeginShowSelector(GuideCallback, null);
 #else
-                StorageDevice.BeginShowSelector(GuideCallback, null);
+                //StorageDevice.BeginShowSelector(GuideCallback, null);
+                manager.PushScreen(GameRef.StartScreen);
 #endif
             }
             base.Update(gameTime);
         }
 
-        private void GuideCallback(IAsyncResult result)
-        {
-            StorageDevice selectedDevice;
-            if (result.IsCompleted)
-            {
-                //selectedDevice = Guide.EndShowStorageDeviceSelector(result);
-                selectedDevice = StorageDevice.EndShowSelector(result);
-                if (selectedDevice != null)
-                {
-                    Session.StorageDevice = selectedDevice;
-                    manager.PushScreen(GameRef.StartScreen);
-                }
-            }
-        }
+        //private void GuideCallback(IAsyncResult result)
+        //{
+        //    StorageDevice selectedDevice;
+        //    if (result.IsCompleted)
+        //    {
+        //        //selectedDevice = Guide.EndShowStorageDeviceSelector(result);
+        //        selectedDevice = StorageDevice.EndShowSelector(result);
+        //        if (selectedDevice != null)
+        //        {
+        //            Session.StorageDevice = selectedDevice;
+        //            manager.PushScreen(GameRef.StartScreen);
+        //        }
+        //    }
+        //}
 
         public override void Draw(GameTime gameTime)
         {

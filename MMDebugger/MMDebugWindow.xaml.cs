@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace MMDebugger
 {
@@ -207,6 +208,12 @@ namespace MMDebugger
             HandleDebugEvent(sender, args);
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Console.WriteLine($">>> MMDebugWindow Closed event (Thread ID: {Thread.CurrentThread.ManagedThreadId})");
+
+            Dispatcher.InvokeShutdown();
+        }
     }
 
     public class MMDebugEventArgs : EventArgs

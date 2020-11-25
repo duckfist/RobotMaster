@@ -16,6 +16,8 @@ using Microsoft.Win32;
 using System.Windows.Threading;
 using RobotMaster.TileEngine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace MMEditor
 {
@@ -128,12 +130,16 @@ namespace MMEditor
             dlg.InitialDirectory = Environment.CurrentDirectory + "\\Content\\Tiles";
             dlg.FileName = "tileset";
             dlg.DefaultExt = ".png";
-            dlg.Filter = "PNG Image Files (.png)|*.png";
+            dlg.Filter = "MonoGame Assets (.xnb)|*.xnb|PNG Image Files (.png)|*.png";
 
             Nullable<bool> result = dlg.ShowDialog();
 
             if (result == true)
             {
+                //FileStream fs = new FileStream(dlg.FileName, FileMode.Open);
+                //GraphicsDevice g = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.HiDef, new PresentationParameters());
+                //Texture2D test = Texture2D.FromStream(g, fs);
+
                 // Grab image source from filename and load into local image
                 ImageSourceConverter sourceConverter = new ImageSourceConverter();
                 ImageSource source = (ImageSource)sourceConverter.ConvertFromString(dlg.FileName);

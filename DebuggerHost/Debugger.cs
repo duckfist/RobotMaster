@@ -47,7 +47,8 @@ namespace DebuggerHost
 
         public static void Show(MMDebugEventHandler handleDebugEvents)
         {
-            //DebugWindow = new MMDebugWindow();
+            DebugWindow = new MMDebugWindow();
+
             DebugWindow.ShowActivated = false;      // Prevent from stealing focus!
             DebugWindow.HandleDebugEvent = new MMDebugEventHandler(handleDebugEvents);
             DebugWindow.Show();
@@ -79,7 +80,12 @@ namespace DebuggerHost
 
         public static void Exit(Thread thread)
         {
-            System.Windows.Threading.Dispatcher.FromThread(thread).InvokeShutdown();
+            Console.WriteLine($">>> Debugger.Exit called on thread {Thread.CurrentThread.ManagedThreadId} for thread {thread.ManagedThreadId}");
+
+            if (thread.IsAlive)
+            {
+                System.Windows.Threading.Dispatcher.FromThread(thread).InvokeShutdown();
+            }
         }
     }
 }
